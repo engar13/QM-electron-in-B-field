@@ -13,7 +13,7 @@ import cmath as cm
 h_bar=1
 m=1
 e=1
-Bx=0.8
+Bx=0.5
 B0=1
 #d=1
 #om=1    #omega
@@ -57,16 +57,21 @@ for i in range(0, len(t[0])-1):
     c1[i+1]=c1[i]+dt*dc1
     c2[i+1]=c2[i]+dt*dc2
 #%%
-P_trans=modul2(c2)
+P_trans = modul2(c2)
 
-exact=Bx**2/(Bx**2 + B0**2) *( np.sin( e*np.sqrt(B0**2 + Bx**2) * t[0] / (2*m) ) )**2
+exact = Bx**2/(Bx**2 + B0**2) *( np.sin( e*np.sqrt(B0**2 + Bx**2) * t[0] / (2*m) ) )**2
+
+TP_theory = modul2( e*Bx/(2*m*Dom)*(np.cos(Dom * t[0]) - np.sin(Dom * t[0])*1j - 1) )
 fig, ax = plt.subplots()
 
-ax.plot(t[0], P_trans, label='P_trans')
-ax.plot(t[0], modul2(c1), color='orange', label='P_1')
-ax.plot(t[0], P_trans + modul2(c1), color='green', label='total')
-ax.plot(t[0], exact, color='red', label='EXACT', linestyle='-.')
+ax.plot(t[0], P_trans, label='Numerical Method')
+#ax.plot(t[0], modul2(c1), color='orange', label='P_1')
+#ax.plot(t[0], P_trans + modul2(c1), color='green', label='total')
+ax.plot(t[0], exact, color='red', label='Analytical Solution', linestyle='-.')
+ax.plot(t[0], TP_theory, color='tomato', label='Time Dep. Pert. Theory', linestyle='--')
 ax.legend()
+ax.set_title("Probability of transition to down spin when in external magnetic field\n\
+             $B_x=%.2f \quad B_0=%.2f$" %(Bx, B0))
 #ax.set_xlim([0,t[len(t)-1]])
 #ax.set_ylim([-0.15,1.5])
 
